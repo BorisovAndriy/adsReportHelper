@@ -1,0 +1,154 @@
+/* Загальні стилі для 3D ефектів */
+
+/* Заголовки h2 з 3D ефектом */
+h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ff6600; /* Помаранчевий */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Тінь для 3D ефекту */
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+h2:hover {
+    color: #cc5200; /* Темніший помаранчевий при наведенні */
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Стилі для 3D кнопок */
+.btn {
+    background-color: #ff6600; /* Помаранчевий фон */
+    border: 2px solid #ff6600; /* Кордон того ж кольору */
+    color: white; /* Текст білий */
+    padding: 10px 20px;
+    border-radius: 50px; /* Закруглені кути */
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Тінь для 3D вигляду */
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #cc5200; /* Темніший помаранчевий при наведенні */
+    border-color: #cc5200;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Сильніша тінь */
+    transform: translateY(-3px); /* Легке підняття */
+}
+
+/* Стилі для кнопок з класом .btn-outline-secondary */
+.btn-outline-secondary {
+    background-color: transparent;
+    border: 2px solid #ff6600;
+    color: #ff6600;
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Легка тінь для 3D ефекту */
+}
+
+.btn-outline-secondary:hover {
+    background-color: #ff6600;
+    color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Сильніша тінь */
+    transform: translateY(-3px); /* Легке підняття */
+}
+
+/* Додаткові загальні стилі для тексту та колонок */
+p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333333; /* Темний сірий */
+}
+
+.row {
+    margin-top: 40px;
+}
+
+.col-lg-4 {
+    padding: 20px;
+}
+
+/* Поля введення для 3D форм */
+input[type="text"], input[type="number"], input[type="file"], textarea, select {
+    background-color: #fffbe6; /* Світло-жовтий фон */
+    border: 2px solid #ffcc00; /* Жовтий кордон */
+    color: #333; /* Темний текст */
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2); /* Внутрішня тінь */
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="number"]:focus, input[type="file"]:focus, textarea:focus, select:focus {
+    border-color: #ff6600; /* Помаранчевий кордон при фокусі */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Зовнішня тінь при фокусі */
+    outline: none;
+}
+
+/* Стилі для форми Submit кнопок */
+input[type="submit"], button {
+    background-color: #ff6600; /* Помаранчевий */
+    border: 2px solid #ff6600;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Тінь */
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+input[type="submit"]:hover, button:hover {
+    background-color: #cc5200; /* Темніший помаранчевий при наведенні */
+    border-color: #cc5200;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    transform: translateY(-3px);
+}
+
+/* Файлові поля з 3D ефектом */
+.file-input {
+    background-color: #fffbe6;
+    border: 2px solid #ffcc00;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.file-input:hover {
+    border-color: #ff6600;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Стилі для посилань */
+a {
+    color: #ff6600; /* Помаранчевий для посилань */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #cc5200; /* Темніший при наведенні */
+}
+
+/* Глобальні стилі для всіх форм */
+.form-control {
+    background-color: #fffbe6; /* Легкий жовтий фон для полів форм */
+    border: 2px solid #ffcc00;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #ff6600;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    outline: none;
+}

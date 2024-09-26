@@ -1,0 +1,79 @@
+/* === Глобальні стилі для всіх форм === */
+form {
+    padding: 20px;
+    background-color: #f9f9f9; /* Світлий фон для форм */
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Зовнішня тінь для форми */
+    transition: all 0.3s ease;
+}
+
+/* === Поля введення та textarea з 3D ефектами === */
+input[type="text"], input[type="email"], input[type="password"], input[type="number"], textarea, select {
+    background-color: #ffffff; /* Білий фон для полів */
+    border: 2px solid #ffcc00; /* Жовтий кордон */
+    color: #333; /* Темний текст */
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2); /* Внутрішня тінь для 3D ефекту */
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+    border-color: #007bff; /* Синій кордон при фокусі */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Зовнішня тінь при фокусі */
+    outline: none;
+    transform: translateY(-2px); /* Підняття при фокусі */
+}
+
+/* === Кнопки з 3D ефектами === */
+button, input[type="submit"] {
+    background-color: #ff6600; /* Помаранчевий */
+    border: 2px solid #ff6600;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Тінь для 3D ефекту */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #cc5200; /* Темніший помаранчевий */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Сильніша тінь при наведенні */
+    transform: translateY(-3px); /* Підняття при наведенні */
+}
+
+/* === Поля типу file з 3D ефектом === */
+input[type="file"] {
+    background-color: #ffffff;
+    border: 2px solid #ffcc00;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2); /* Внутрішня тінь */
+    transition: all 0.3s ease;
+}
+
+input[type="file"]:hover {
+    border-color: #ff6600;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Зовнішня тінь при наведенні */
+}
+
+/* === Стилизовані теги label для полів форми === */
+label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333; /* Темний сірий */
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* === Поля з помилками (aria-invalid === true) === */
+input[aria-invalid="true"], textarea[aria-invalid="true"], select[aria-invalid="true"] {
+    border-color: #e74c3c; /* Червоний кордон для помилок */
+    background-color: #ffe6e6; /* Світло-червоний фон для помилок */
+}

@@ -1,0 +1,465 @@
+/* Основні кольори */
+:root {
+    --orange-color: #ff8c00;   /* Основний помаранчевий */
+    --dark-orange-color: #ff7a00; /* Темний помаранчевий для hover */
+    --yellow-color: #ffd700;   /* Яскравий жовтий */
+    --dark-yellow-color: #e6c200; /* Темний жовтий */
+    --blue-color: #1e90ff;     /* Яскравий синій */
+    --dark-blue-color: #1a7ccc; /* Темний синій */
+    --light-grey-color: #f0f0f0; /* Світло-сірий для фону */
+    --dark-grey-color: #333;     /* Темний сірий для тексту */
+}
+
+/* Загальні стилі для тіла */
+body {
+    background-color: var(--light-grey-color);
+    color: var(--dark-grey-color);
+    font-family: Arial, sans-serif;
+}
+
+/* Заголовки */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--orange-color);
+    font-weight: bold;
+}
+
+/* Посилання */
+a {
+    color: var(--blue-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--yellow-color);
+}
+
+/* Глобальні стилі для кнопок */
+button, .btn {
+    background-color: var(--orange-color);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, .btn:hover {
+    background-color: var(--dark-orange-color);
+}
+
+/* Кнопки за замовчуванням (включаючи btn-primary) */
+.btn-primary {
+    background-color: var(--orange-color); /* Заміна синього на помаранчевий */
+    border-color: var(--orange-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--dark-orange-color); /* Темніший помаранчевий при hover */
+    border-color: var(--dark-orange-color);
+}
+
+/* Кнопки для попереджень */
+.btn-warning {
+    background-color: var(--yellow-color);
+    border-color: var(--yellow-color);
+    color: black;
+}
+
+.btn-warning:hover {
+    background-color: var(--dark-yellow-color);
+    border-color: var(--dark-yellow-color);
+}
+
+/* Інпут поля */
+input[type="text"], input[type="password"], textarea, select {
+    border: 1px solid var(--blue-color);
+    background-color: #fff;
+    color: var(--dark-grey-color);
+    padding: 10px;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus {
+    border-color: var(--yellow-color);
+    outline: none;
+}
+
+/* Форми */
+form {
+    margin: 20px 0;
+}
+
+label {
+    color: var(--orange-color);
+    font-weight: bold;
+}
+
+/* Таблиці */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table, th, td {
+    border: 1px solid var(--blue-color);
+}
+
+th {
+    background-color: var(--orange-color);
+    color: white;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    background-color: #fff;
+}
+
+/* Панелі та блоки */
+.panel, .card {
+    border: 1px solid var(--blue-color);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.panel-heading, .card-header {
+    background-color: var(--orange-color);
+    color: white;
+    font-weight: bold;
+}
+
+/* Футер */
+footer {
+    background-color: var(--blue-color);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+footer a {
+    color: var(--yellow-color);
+}
+
+footer a:hover {
+    color: white;
+}
+
+/* Повідомлення */
+.alert {
+    padding: 15px;
+    margin: 20px 0;
+    border: 1px solid var(--yellow-color);
+    background-color: var(--yellow-color);
+    color: var(--dark-grey-color);
+}
+
+.alert-info {
+    background-color: var(--blue-color);
+    color: white;
+}
+
+.alert-warning {
+    background-color: var(--yellow-color);
+    color: var(--dark-grey-color);
+}
+
+/* Медіа запити для адаптивності */
+@media (max-width: 768px) {
+    .btn, input[type="text"], input[type="password"], textarea, select {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    table, th, td {
+        display: block;
+        width: 100%;
+    }
+}
+/* Основні кольори */
+:root {
+    --orange-color: #ff8c00;   /* Основний помаранчевий */
+    --yellow-color: #ffd700;   /* Яскравий жовтий */
+    --blue-color: #1e90ff;     /* Яскравий синій */
+    --dark-grey-color: #333;   /* Темний сірий для тексту */
+}
+
+/* Стиль для navbar */
+.navbar {
+    background-color: var(--dark-grey-color); /* Темно-сірий фон */
+    border-bottom: 3px solid var(--orange-color); /* Нижня межа помаранчева */
+}
+
+.navbar .navbar-brand {
+    color: var(--orange-color); /* Логотип або текст бренду помаранчевий */
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar .navbar-brand:hover {
+    color: var(--yellow-color); /* При наведенні — жовтий */
+}
+
+.navbar .navbar-nav .nav-link {
+    color: var(--blue-color); /* Посилання в навбарі сині */
+    font-size: 1.1rem;
+    padding: 10px;
+    transition: color 0.3s ease;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+    color: var(--yellow-color); /* При наведенні на посилання — жовтий */
+}
+
+/* Активна вкладка */
+.navbar .navbar-nav .nav-item.active .nav-link {
+    color: var(--orange-color); /* Активне посилання — помаранчеве */
+    font-weight: bold;
+}
+
+/* Кнопка меню (hamburger) */
+.navbar-toggler {
+    background-color: var(--orange-color); /* Помаранчева кнопка */
+    border: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255,0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); /* Білий індикатор */
+}
+
+/* Фіксована панель */
+.fixed-top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
+}
+
+/* Адаптивність для мобільних */
+@media (max-width: 768px) {
+    .navbar .navbar-nav .nav-link {
+        font-size: 1rem;
+        padding: 8px;
+    }
+
+    .navbar .navbar-brand {
+        font-size: 1.2rem;
+    }
+}
+
+/* Основні кольори */
+:root {
+    --orange-color: #ff8c00;   /* Основний помаранчевий */
+    --dark-orange-color: #ff7a00; /* Темний помаранчевий для hover */
+    --yellow-color: #ffd700;   /* Яскравий жовтий */
+    --dark-yellow-color: #e6c200; /* Темний жовтий */
+    --blue-color: #1e90ff;     /* Яскравий синій */
+    --dark-blue-color: #1a7ccc; /* Темний синій */
+    --light-grey-color: #f0f0f0; /* Світло-сірий для фону */
+    --dark-grey-color: #333;     /* Темний сірий для тексту */
+    --shadow-color: rgba(0, 0, 0, 0.2); /* Тіні для 3D-ефекту */
+}
+
+/* Загальні стилі для тіла */
+body {
+    background-color: var(--light-grey-color);
+    color: var(--dark-grey-color);
+    font-family: Arial, sans-serif;
+}
+
+/* Заголовки */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--orange-color);
+    font-weight: bold;
+}
+
+/* Стилі форми */
+.period-form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px var(--shadow-color);
+    max-width: 600px;
+    margin: auto;
+    position: relative;
+}
+
+/* Інпут з 3D-ефектом */
+.input-3d {
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--blue-color);
+    box-shadow: inset 0 5px 10px var(--shadow-color), 0 5px 10px var(--shadow-color);
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.input-3d:focus {
+    border-color: var(--yellow-color);
+    box-shadow: inset 0 5px 10px var(--shadow-color), 0 5px 15px var(--yellow-color);
+    outline: none;
+}
+
+/* Стилі для кнопки з 3D-ефектом */
+.btn-3d {
+    background-color: var(--orange-color);
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 10px var(--shadow-color);
+}
+
+.btn-3d:hover {
+    background-color: var(--dark-orange-color);
+    box-shadow: 0 10px 20px var(--shadow-color);
+}
+
+/* Інпут для завантаження файлів з 3D-ефектом */
+.file-input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--blue-color);
+    box-shadow: inset 0 5px 10px var(--shadow-color);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.file-input:hover {
+    border-color: var(--yellow-color);
+    box-shadow: inset 0 5px 10px var(--shadow-color), 0 5px 10px var(--yellow-color);
+}
+
+/* Базовий стиль для повідомлень про помилки з 3D-ефектом */
+.help-block {
+    color: red;
+    font-size: 14px;
+    position: absolute;  /* Абсолютне позиціонування */
+    top: -25px;  /* Розміщення над полем */
+    right: 0;    /* Вирівнювання по правій стороні */
+    transform: translateY(-5px);  /* Легкий відступ вгору для зручності */
+    background-color: white;  /* Фон для контрасту */
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);  /* Тінь для 3D-ефекту */
+    white-space: nowrap;  /* Щоб текст не переносився на новий рядок */
+    pointer-events: none;  /* Повідомлення не взаємодіє з курсором */
+}
+
+/* Обгортка для поля з позиціонуванням */
+.form-group {
+    position: relative;  /* Контейнер для інпутів з абсолютними повідомленнями */
+    margin-bottom: 40px;  /* Додаємо додатковий відступ для помилок */
+}
+
+/* Поля з помилками (3D-ефект) */
+.has-error .form-control {
+    border-color: red;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);  /* Підсвічення червоним */
+}
+
+/* Інпут з 3D-ефектом */
+.input-3d {
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--blue-color);
+    box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.input-3d:focus {
+    border-color: var(--yellow-color);
+    box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.2), 0 5px 15px var(--yellow-color);
+    outline: none;
+}
+
+/* Основний стиль для breadcrumbs */
+.breadcrumb {
+    background-color: transparent;
+    padding: 10px 15px;
+    list-style: none;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15); /* 3D тінь для всієї навігаційної панелі */
+    display: flex;
+    justify-content: flex-start;
+}
+
+.breadcrumb-item {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 16px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), inset 0 4px 8px rgba(0, 0, 0, 0.05); /* 3D ефект для кожного елемента */
+    transition: all 0.3s ease;
+}
+
+/* Стиль для активного елемента (останнього) */
+.breadcrumb-item.active {
+    color: var(--orange-color);
+    font-weight: bold;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(255, 140, 0, 0.2), inset 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Hover ефект для breadcrumb-link */
+.breadcrumb-item a {
+    color: var(--blue-color);
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--orange-color);
+    transform: translateY(-2px); /* Легкий підйом при наведенні */
+}
+
+/* Додаємо ефект тиснення при натисканні на посилання */
+.breadcrumb-item a:active {
+    transform: translateY(2px); /* Ефект "натискання" */
+}
+
+/* Вирівнюємо останній елемент (active) без посилання */
+.breadcrumb-item:last-child {
+    margin-right: 0;
+}
+
+.alert-custom {
+    background-color: white;
+    border: 2px solid var(--orange-color);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 5px 15px var(--shadow-color);
+    color: var(--dark-grey-color);
+    margin: 20px 0;
+    text-align: center;
+}
+
+.alert-heading-custom {
+    color: var(--orange-color);
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.lead {
+    font-size: 1.2rem;
+    color: var(--dark-grey-color);
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
+
