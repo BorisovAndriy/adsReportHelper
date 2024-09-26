@@ -1,0 +1,9 @@
+RewriteEngine on
+
+# Включаємо "красиві" URL, які не включають index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+
+# Перенаправлення на мовні параметри (en або uk)
+#RewriteRule ^(en|uk)(/.*)?$ index.php?language=$1&$2 [QSA,L]

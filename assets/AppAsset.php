@@ -1,0 +1,45 @@
+<?php
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2008 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ */
+
+namespace app\assets;
+
+use yii\web\AssetBundle;
+
+/**
+ * Main application asset bundle.
+ *
+ * @author Qiang Xue <qiang.xue@gmail.com>
+ * @since 2.0
+ */
+class AppAsset extends AssetBundle
+{
+    public $basePath = '@webroot';
+    public $baseUrl = '@web';
+    public $css = [
+        'css/site.css',
+        'css/orange-theme.css',
+        'css/custom-style.css',
+        'css/custom-3d-styles.css'
+    ];
+    public $js = [
+        'js/my-script.js',  // ваш кастомний файл
+
+        //'js/three.min.js'
+    ];
+
+    public $jsOptions = [
+        'position' => \yii\web\View::POS_HEAD, // Підключаємо скрипти в шапці
+    ];
+
+    public $depends = [
+        'yii\web\YiiAsset',
+        'yii\bootstrap4\BootstrapAsset',
+        'yii\web\JqueryAsset', // jQuery буде автоматично підключений
+    ];
+
+
+}
