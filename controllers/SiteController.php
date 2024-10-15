@@ -152,24 +152,12 @@ class SiteController extends Controller
         return $this->render('ai-test', ['response' => $response]);
     }
 
-// Приклад використання:
-//echo numberToText(123); // виведе: "сто двадцять три"
 
-
-//-12 961,50 UAH ID 942987 statement_detailed_942987
     public function actionAbout()
     {
 
 
         $totalSumma = 0;
-
-
-
-/*
-        $periodFrom = '03.09.2024  14:45:25';
-        $periodFTo = '22.09.2024  14:45:25';
-        $docsNumber = 329;
-*/
         $model = new PeriodForm();
 
 
@@ -205,8 +193,6 @@ class SiteController extends Controller
 
 
             try {
-                // Шлях до Excel файлу
-
 
                 $inputFileName = $inputFileName;
                 $totalSumma = 0;
@@ -223,36 +209,11 @@ class SiteController extends Controller
                     $rowData = [];
                     foreach ($cellIterator as $cell) {
                         $rowData[] = $cell->getValue(); // Отримати значення клітинки
-
-
-                        /*
-
-                        $rowData[] = $dateHandler->excelDateToPHP($cell->getValue());
-
-                        if (is_float($value)) {
-                            $value = $dateHandler->excelDateToPHP($cell->getValue());
-                        }
-                        */
                     }
                     $datas[] = $rowData; // Додати рядок до масиву
                 }
 
-                /*
-                foreach ($datas as &$data){
-
-                    $data[3] = '01.09.2024  14:45:25';
-                    $data[4] = '22.09.2024  14:45:25';
-                }
-
-                // Повернення даних у вигляді JSON (можна також відобразити у вигляді таблиці)
-/*
-                echo '<pre>';
-                VarDumper::dump($datas[2]);
-                die();
-*/
                 foreach ($datas as $data){
-                    //var_dump($data);
-                    //die();
                     $tmpFloat = floatval($data[4]);
                     if (!empty($tmpFloat)){
                         $totalSumma += $tmpFloat;
@@ -263,17 +224,6 @@ class SiteController extends Controller
                 echo 'Caught exception: ',  $e->getMessage(), "\n";
             }
 
-            /*
-            echo '<pre>';
-            var_dump($datas[3]);
-            die();
-*/
-
-
-/*
-            var_dump($totalSumma);;
-            die();
-*/
 
             // Далі робимо щось з даними, наприклад, зберігаємо в БД або обробляємо
             $actGenerator = new ActGenerator();
@@ -292,88 +242,17 @@ class SiteController extends Controller
             $outputReportFileName = $reportGenerator->generateReport($totalSumma, $model->periodFrom, $model->periodTo, $model->docsNumber, $datas);
             $files[] = $outputReportFileName;
 
+            $zipArchive = $description = false;
+
             $fileHandler->createZipArchive($files, Yii::getAlias('@webroot') . '/source/'.$docsNumber.'_archive.zip');
-            die('complete');
-            //$invoiceGenerator->generateInvoice($totalSumma, $model->periodFrom, $model->periodTo, $model->docsNumber);
 
-           // $outputActFileName = 'source/' . $docsNumber . '_act_andriy_borisov.xlsx';
-            //$outputActFileName = 'source/' . $docsNumber . '_invoice_andriy_borisov.xlsx';
+            $zipArchive = Yii::getAlias('@webroot') . '/source/'.$docsNumber.'_archive.zip';
 
+            return Yii::$app->response->sendFile($zipArchive);
 
-
-
-
-
-            //$path = __DIR__ . DIRECTORY_SEPARATOR . 'Согласие.pdf';
-            /*
-            $file_get_contents = file_get_contents($outputActFileName);
-            header("Content-type:application/xlsx");
-            header("Content-Disposition:attachment;filename= " . $docsNumber . "_act_andriy_borisov.xlsx");
-            header("Content-Length:" . filesize($outputActFileName));
-            echo $file_get_contents;
-
-
-
-            $outputActFileName = 'source/' . $docsNumber . '_invoice_andriy_borisov.xlsx';
-            $invoiceGenerator->generateInvoice($totalSumma, $model->periodFrom, $model->periodTo, $model->docsNumber);
-
-            $file_get_contents = file_get_contents($outputActFileName);
-            header("Content-type:application/xlsx");
-            header("Content-Disposition:attachment;filename= " . $docsNumber . "_invoice_andriy_borisov.xlsx");
-            header("Content-Length:" . filesize($outputActFileName));
-            echo $file_get_contents;
-                */
-
-            return $this->render('about', ['model' => $model]);
         }
-
-
-
-
-
 
         return $this->render('about', ['model' => $model]);
     }
-        /*
-            $exporter = new Spreadsheet([
-                'dataProvider' => new ArrayDataProvider([
-                    'allModels' => [
-                        [
-                            'name' => 'some name',
-                            'price' => '9879',
-                        ],
-                        [
-                            'name' => 'name 2',
-                            'price' => '79',
-                        ],
-                    ],
-                ]),
-                'columns' => [
-                    [
-                        'attribute' => 'name',
-                        'contentOptions' => [
-                            'alignment' => [
-                                'horizontal' => 'center',
-                                'vertical' => 'center',
-                            ],
-                        ],
-                    ],
-                    [
-                        'attribute' => 'price',
-                    ],
-                ],
-            ]);
-            $exporter->save('source/statement_detailed_yii2.xlsx');
-            die();
-           // return $this->asJson($data);
-
-        } catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
-        }
-
-
-        die('actionAbout');
-        return $this->render('about');
-        */
 
 }
