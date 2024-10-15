@@ -62,8 +62,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php ActiveForm::end(); ?>
 
 </div>
-
-
 <div id="ball">⚽</div>
 <div id="dog">🐕</div>
 <div id="basket">🧺</div>
@@ -76,29 +74,29 @@ $this->params['breadcrumbs'][] = $this->title;
 
     #ball {
         font-size: 25px;
-        top: 300px;
-        left: 10%;
+        bottom: 5%;
+        right: 5%;
         animation: bounce-ball 0.5s infinite;
     }
 
     #dog {
         font-size: 50px;
-        top: 350px;
-        left: 15%;
-        transition: all 0.3s linear;
+        bottom: 5%;
+        right: 10%;
+        transition: transform 0.3s linear, all 0.3s linear;
         animation: bounce-dog 0.8s infinite;
     }
 
     #basket {
         font-size: 35px;
-        bottom: 30%;
-        left: 10%;
+        bottom: 5%;
+        right: 5%;
     }
 
     #counter {
         position: absolute;
-        bottom: 40%;
-        left: 12%;
+        bottom: 20%;
+        right: 7%;
         font-size: 40px;
         color: #FF4500;
         font-weight: bold;
@@ -128,47 +126,49 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 </style>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     $(document).ready(function() {
-        let isBallInBasket = true;
-        let ballCount = 0;
+        let isBallInBasket = true;  // Слідкуємо, чи м'яч у кошику
+        let ballCount = 0;          // Лічильник доставлених м'ячів
+        let isBoneActive = false;   // Слідкуємо, чи є кісточка на екрані
 
-        // М'яч вилітає за кліком або сам по собі
-        function launchBall(event = null) {
-            if (isBallInBasket) {
-                let randomX, randomY;
+        // Функція для запуску м'яча до місця кліку
+        function launchBall(event) {
+            if (isBallInBasket && !isBoneActive) { // Перевірка, щоб м'яч не запускався під час активної кісточки
+                let mouseX = event.pageX - 25; // Корекція для центру м'яча
+                let mouseY = event.pageY - 25;
 
-                // Якщо є подія кліку миші, беремо координати кліку
-                if (event) {
-                    randomX = event.pageX - 25; // Мінус 25px, щоб м'яч був по центру кліку
-                    randomY = event.pageY - 25;
-                } else {
-                    // Якщо немає кліку, м'яч вилітає у випадкове місце
-                    randomX = Math.random() * ($(window).width() - 100);
-                    randomY = Math.random() * ($(window).height() - 200);
-                }
-
-                $('#ball').animate({
-                    left: randomX,
-                    top: randomY
-                }, 1000, function() {
-                    moveDogToBall(randomX, randomY); // Собака біжить за м'ячем
+                // М'яч вилітає з кошика
+                let basketPos = $('#basket').position();
+                $('#ball').css({
+                    left: basketPos.left + 20 + 'px',
+                    top: basketPos.top - 50 + 'px'
                 });
 
-                isBallInBasket = false;
+                // Анімація польоту м'яча до кліка
+                $('#ball').animate({
+                    left: mouseX,
+                    top: mouseY
+                }, 1000, function() {
+                    moveDogToBall(mouseX, mouseY); // Собака біжить за м'ячем
+                });
+
+                isBallInBasket = false; // М'яч більше не в кошику
             }
         }
 
-        // Собака біжить до м'яча
+        // Функція для руху собаки до м'яча
         function moveDogToBall(ballX, ballY) {
             let dog = $('#dog');
             let currentLeft = dog.position().left;
 
-            // Зміна напрямку собаки
+            // Поворот собаки в сторону м'яча
             if (ballX < currentLeft) {
-                dog.css('transform', 'scaleX(-1)');
+                dog.css('transform', 'scaleX(-1)');  // Поворот наліво
             } else {
-                dog.css('transform', 'scaleX(1)');
+                dog.css('transform', 'scaleX(1)');   // Поворот направо
             }
 
             // Анімація руху собаки до м'яча
@@ -176,13 +176,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 left: ballX,
                 top: ballY
             }, 1000, function() {
-                carryBallToBasket();
+                carryBallToBasket(); // Після досягнення м'яча - несе його назад
             });
         }
 
-        // Собака приносить м'яч до кошика
+        // Функція для повернення собаки з м'ячем до кошика
         function carryBallToBasket() {
             let dog = $('#dog');
+            let basketPos = $('#basket').position();
 
             // М'яч слідує за собакою
             $('#ball').css({
@@ -191,25 +192,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 transition: 'none'
             });
 
-            // Рухаємо собаку з м'ячем до кошика
-            let basketLeft = $('#basket').position().left;
-            let basketTop = $('#basket').position().top;
-
+            // Собака і м'яч повертаються до кошика
             dog.animate({
-                left: basketLeft,
-                top: basketTop - 50
+                left: basketPos.left,
+                top: basketPos.top - 50
             }, 1000, function() {
-                placeBallInBasket();
+                placeBallInBasket(); // Після прибуття кладемо м'яч у кошик
             });
 
-            // М'яч рухається разом з собакою
+            // М'яч рухається разом із собакою
             $('#ball').animate({
-                left: basketLeft + 20,
-                top: basketTop - 50
+                left: basketPos.left + 20,
+                top: basketPos.top - 50
             }, 1000);
         }
 
-        // Поміщаємо м'яч в кошик
+        // Функція для поміщення м'яча в кошик і запуску кісточки
         function placeBallInBasket() {
             $('#ball').css({
                 left: $('#basket').position().left + 20 + 'px',
@@ -220,16 +218,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ballCount++;
             $('#counter').text(ballCount);
 
-            // Повертаємо стан, що м'яч у кошику
+            // М'яч повернувся до кошика
             isBallInBasket = true;
 
-            // Запускаємо кісточку після доставки м'яча
+            // Запускаємо кісточку через секунду після повернення м'яча
             setTimeout(launchBone, 1000);
         }
 
-        // Запускаємо кісточку з кошика
+        // Функція для запуску кісточки
         function launchBone() {
-            $('<div id="bone">🦴</div>').appendTo('body');
+            isBoneActive = true; // Вказуємо, що кісточка активна
+
+            $('<div id="bone">🦴</div>').appendTo('body'); // Створюємо кісточку
 
             $('#bone').css({
                 position: 'absolute',
@@ -238,58 +238,61 @@ $this->params['breadcrumbs'][] = $this->title;
                 top: $('#basket').position().top - 50 + 'px'
             });
 
+            // Випадкове місце для кісточки
             let randomX = Math.random() * ($(window).width() - 100);
             let randomY = Math.random() * ($(window).height() - 200);
 
+            // Анімація польоту кісточки
             $('#bone').animate({
                 left: randomX,
                 top: randomY
             }, 1000, function() {
-                moveDogToBone(randomX, randomY); // Собака біжить до кісточки
+                moveDogToBone(randomX, randomY); // Собака біжить за кісточкою
             });
         }
 
-        // Собака біжить до кісточки
+        // Функція для руху собаки до кісточки
         function moveDogToBone(boneX, boneY) {
             let dog = $('#dog');
             let currentLeft = dog.position().left;
 
-            // Зміна напрямку собаки
+            // Поворот собаки в сторону кісточки
             if (boneX < currentLeft) {
-                dog.css('transform', 'scaleX(-1)');
+                dog.css('transform', 'scaleX(-1)');  // Поворот наліво
             } else {
-                dog.css('transform', 'scaleX(1)');
+                dog.css('transform', 'scaleX(1)');   // Поворот направо
             }
 
+            // Анімація руху собаки до кісточки
             dog.animate({
                 left: boneX,
                 top: boneY
             }, 1000, function() {
-                eatBone();
+                eatBone(); // Собака "їсть" кісточку
             });
         }
 
-        // Собака їсть кісточку
+        // Функція для "з'їдання" кісточки
         function eatBone() {
-            $('#bone').remove();
+            $('#bone').remove(); // Видаляємо кісточку
 
-            let basketLeft = $('#basket').position().left;
-            let basketTop = $('#basket').position().top;
+            let basketPos = $('#basket').position();
 
+            // Поворот собаки в бік кошика
+            $('#dog').css('transform', 'scaleX(1)');
+
+            // Собака повертається до кошика
             $('#dog').animate({
-                left: basketLeft,
-                top: basketTop - 50
+                left: basketPos.left,
+                top: basketPos.top - 50
             }, 1000, function() {
-                setTimeout(launchBall, 1000); // Після з'їдання кісточки запускаємо новий м'яч
+                isBoneActive = false; // Кісточка зникла, можна знову запускати м'яч
             });
         }
 
-        // Запускаємо м'яч після завантаження сторінки або по кліку
+        // Обробляємо клік на документі, щоб м'яч вилітав до курсора миші
         $(document).on('click', function(e) {
-            launchBall(e); // Запускаємо м'яч на місце кліку
+            launchBall(e); // Запускаємо м'яч на місце кліку миші
         });
-
-        // Якщо не було кліку, м'яч вилітає через 3 секунди
-        setTimeout(launchBall, 3000);
     });
 </script>
