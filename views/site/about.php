@@ -21,7 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) */
 ?>
 
-
 <div class="site-about">
 
     <?php $form = ActiveForm::begin([
@@ -31,22 +30,25 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="form-group">
         <?= $form->field($model, 'periodFrom')->textInput([
             'value' => $model->periodFrom,
-            'placeholder' => Yii::t('custom', 'Enter start date'),
-            'class' => 'form-control input-3d']) ?>
+            'placeholder' => Yii::t('custom', 'Enter start date in format DD.MM.YYYY HH:MM:SS'),
+            'class' => 'form-control input-3d'
+        ]) ?>
     </div>
 
     <div class="form-group">
         <?= $form->field($model, 'periodTo')->textInput([
             'value' => $model->periodTo,
-            'placeholder' => Yii::t('custom', 'Enter end date'),
-            'class' => 'form-control input-3d']) ?>
+            'placeholder' => Yii::t('custom', 'Enter end date in format DD.MM.YYYY HH:MM:SS'),
+            'class' => 'form-control input-3d'
+        ]) ?>
     </div>
 
     <div class="form-group">
         <?= $form->field($model, 'docsNumber')->textInput([
             'value' => $model->docsNumber,
             'placeholder' => Yii::t('custom', 'Enter number of documents'),
-            'class' => 'form-control input-3d']) ?>
+            'class' => 'form-control input-3d'
+        ]) ?>
     </div>
 
     <div class="form-group file-input-container">
@@ -60,6 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php ActiveForm::end(); ?>
 
 </div>
+
 
 <div id="ball">⚽</div>
 <div id="dog">🐕</div>
