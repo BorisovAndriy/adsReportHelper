@@ -60,6 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php ActiveForm::end(); ?>
 
 </div>
+
 <div id="ball">⚽</div>
 <div id="dog">🐕</div>
 <div id="basket">🧺</div>
@@ -72,29 +73,29 @@ $this->params['breadcrumbs'][] = $this->title;
 
     #ball {
         font-size: 25px;
-        top: 300px; /* Початкова позиція над кошиком */
-        left: 10%; /* Поряд з кошиком */
+        top: 300px;
+        left: 10%;
         animation: bounce-ball 0.5s infinite;
     }
 
     #dog {
         font-size: 50px;
-        top: 350px; /* Початкова позиція над кошиком */
-        left: 15%; /* Поряд з кошиком */
+        top: 350px;
+        left: 15%;
         transition: all 0.3s linear;
         animation: bounce-dog 0.8s infinite;
     }
 
     #basket {
-        font-size: 35px; /* Кошик вдвічі менший */
-        bottom: 30%; /* Вище на 30% від нижнього краю */
-        left: 10%; /* Поруч з початковою позицією м'яча */
+        font-size: 35px;
+        bottom: 30%;
+        left: 10%;
     }
 
     #counter {
         position: absolute;
-        bottom: 40%; /* Лічильник вище кошика */
-        left: 12%; /* Трохи ліворуч від кошика */
+        bottom: 40%;
+        left: 12%;
         font-size: 40px;
         color: #FF4500;
         font-weight: bold;
@@ -124,17 +125,25 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 </style>
 
-
 <script>
     $(document).ready(function() {
         let isBallInBasket = true;
-        let ballCount = 0;  // Лічильник м'ячів
+        let ballCount = 0;
 
-        // М'яч вилітає з кошика через певний час
-        function launchBall() {
+        // М'яч вилітає за кліком або сам по собі
+        function launchBall(event = null) {
             if (isBallInBasket) {
-                let randomX = Math.random() * ($(window).width() - 100);
-                let randomY = Math.random() * ($(window).height() - 200);
+                let randomX, randomY;
+
+                // Якщо є подія кліку миші, беремо координати кліку
+                if (event) {
+                    randomX = event.pageX - 25; // Мінус 25px, щоб м'яч був по центру кліку
+                    randomY = event.pageY - 25;
+                } else {
+                    // Якщо немає кліку, м'яч вилітає у випадкове місце
+                    randomX = Math.random() * ($(window).width() - 100);
+                    randomY = Math.random() * ($(window).height() - 200);
+                }
 
                 $('#ball').animate({
                     left: randomX,
@@ -208,13 +217,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ballCount++;
             $('#counter').text(ballCount);
 
+            // Повертаємо стан, що м'яч у кошику
+            isBallInBasket = true;
+
             // Запускаємо кісточку після доставки м'яча
             setTimeout(launchBone, 1000);
         }
 
         // Запускаємо кісточку з кошика
         function launchBone() {
-            $('<div id="bone">🦴</div>').appendTo('body');  // Додаємо кісточку до сторінки
+            $('<div id="bone">🦴</div>').appendTo('body');
 
             $('#bone').css({
                 position: 'absolute',
@@ -223,7 +235,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 top: $('#basket').position().top - 50 + 'px'
             });
 
-            // Кісточка вилітає в довільне місце
             let randomX = Math.random() * ($(window).width() - 100);
             let randomY = Math.random() * ($(window).height() - 200);
 
@@ -247,7 +258,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 dog.css('transform', 'scaleX(1)');
             }
 
-            // Анімація руху собаки до кісточки
             dog.animate({
                 left: boneX,
                 top: boneY
@@ -260,7 +270,6 @@ $this->params['breadcrumbs'][] = $this->title;
         function eatBone() {
             $('#bone').remove();
 
-            // Собака повертається до кошика після того, як з'їла кісточку
             let basketLeft = $('#basket').position().left;
             let basketTop = $('#basket').position().top;
 
@@ -268,12 +277,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 left: basketLeft,
                 top: basketTop - 50
             }, 1000, function() {
-                launchBall(); // Запускаємо новий м'яч після того, як собака повернеться
+                setTimeout(launchBall, 1000); // Після з'їдання кісточки запускаємо новий м'яч
             });
         }
 
-        // Запускаємо м'яч після завантаження сторінки
-        setTimeout(launchBall, 1000);
-    });
+        // Запускаємо м'яч після завантаження сторінки або по кліку
+        $(document).on('click', function(e) {
+            launchBall(e); // Запускаємо м'яч на місце кліку
+        });
 
+        // Якщо не було кліку, м'яч вилітає через 3 секунди
+        setTimeout(launchBall, 3000);
+    });
 </script>

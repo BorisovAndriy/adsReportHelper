@@ -66,3 +66,127 @@ $this->title = Yii::t('custom', 'My Application');
 
 
 </div>
+
+<div id="zvitobot">🤖</div>
+<div id="basket">🧺 Кошик</div>
+<div id="report">📄</div>
+<p id="counter">Звіти доставлені: 0</p>
+
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    #zvitobot {
+        position: absolute;
+        font-size: 40px;
+        transition: top 1s ease, left 1s ease; /* Плавний рух */
+    }
+
+    #basket {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        font-size: 50px;
+    }
+
+    #report {
+        position: absolute;
+        font-size: 40px;
+        transition: top 1s ease, left 1s ease; /* Плавний рух */
+    }
+
+    #counter {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        font-size: 20px;
+    }
+</style>
+
+<script>
+    const bot = document.getElementById("zvitobot");
+    const basket = document.getElementById("basket");
+    const report = document.getElementById("report");
+    const counterDisplay = document.getElementById("counter");
+    let reportCounter = 0;
+
+    // Розміщуємо звітоБота у кошика на початку
+    function setBotAtBasket() {
+        bot.style.left = basket.offsetLeft + "px";
+        bot.style.top = basket.offsetTop + "px";
+    }
+
+    // Функція для оновлення лічильника
+    function updateCounter() {
+        reportCounter++;
+        counterDisplay.innerText = `Звіти доставлені: ${reportCounter}`;
+    }
+
+    // Функція для переміщення звіту на випадкове місце в межах екрану
+    function moveReportToRandomPosition() {
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        // Генеруємо рандомні координати для звіту в межах екрану
+        const newLeft = Math.floor(Math.random() * (windowWidth - report.offsetWidth));
+        const newTop = Math.floor(Math.random() * (windowHeight - report.offsetHeight));
+
+        // Рухаємо звіт на нове місце
+        report.style.left = newLeft + "px";
+        report.style.top = newTop + "px";
+    }
+
+    // Функція для руху звітоБота до елемента (звіт або кошик)
+    function moveZvitobotTo(target) {
+        const targetLeft = target.offsetLeft;
+        const targetTop = target.offsetTop;
+
+        bot.style.left = targetLeft + "px";
+        bot.style.top = targetTop + "px";
+    }
+
+    // Функція для початку циклу руху звітоБота
+    function startBotMovement() {
+        // ЗвітоБот рухається до звіту
+        moveZvitobotTo(report);
+
+        setTimeout(function() {
+            // Після досягнення звіту, звіт рухається разом із звітоБотом
+            report.style.left = bot.style.left;
+            report.style.top = bot.style.top;
+
+            setTimeout(function() {
+                // ЗвітоБот несе звіт до кошика
+                moveZvitobotTo(basket);
+
+                setTimeout(function() {
+                    // Після доставки до кошика звіт зникає
+                    report.style.left = "-100px";
+                    report.style.top = "-100px";
+
+                    // Оновлюємо лічильник
+                    updateCounter();
+
+                    // Через невеликий час з'являється новий звіт
+                    setTimeout(function() {
+                        moveReportToRandomPosition();
+                    }, 1000);
+
+                }, 2000); // Час, необхідний для того, щоб звітоБот доніс звіт до кошика
+
+            }, 1000); // Час, необхідний для захоплення звіту
+        }, 2000); // Час, необхідний для досягнення звіту
+    }
+
+    // Кожні 6 секунд починаємо новий цикл руху
+    setInterval(startBotMovement, 6000);
+
+    // Перший запуск
+    moveReportToRandomPosition(); // Спочатку показуємо звіт на випадковій позиції
+    setBotAtBasket(); // Розміщуємо звітоБота біля кошика
+    startBotMovement(); // І запускаємо рух звітоБота
+</script>
