@@ -23,31 +23,44 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="site-about">
 
-    <?php $form = ActiveForm::begin([
+    <?php
+    use yii\widgets\MaskedInput;
+
+    $form = ActiveForm::begin([
         'options' => ['enctype' => 'multipart/form-data'], // Додаємо enctype для завантаження файлів
     ]); ?>
 
     <div class="form-group">
-        <?= $form->field($model, 'periodFrom')->textInput([
-            'value' => $model->periodFrom,
-            'placeholder' => Yii::t('custom', 'Enter start date in format DD.MM.YYYY HH:MM:SS'),
-            'class' => 'form-control input-3d'
+        <?= $form->field($model, 'periodFrom')->widget(MaskedInput::class, [
+            'mask' => '99.99.9999', // Маска для дати
+            'options' => [
+                'class' => 'form-control input-3d',
+                'placeholder' => Yii::t('custom', 'Enter start date in format DD.MM.YYYY'),
+            ],
         ]) ?>
     </div>
 
     <div class="form-group">
-        <?= $form->field($model, 'periodTo')->textInput([
-            'value' => $model->periodTo,
-            'placeholder' => Yii::t('custom', 'Enter end date in format DD.MM.YYYY HH:MM:SS'),
-            'class' => 'form-control input-3d'
+        <?= $form->field($model, 'periodTo')->widget(MaskedInput::class, [
+            'mask' => '99.99.9999',
+            'options' => [
+                'class' => 'form-control input-3d',
+                'placeholder' => Yii::t('custom', 'Enter end date in format DD.MM.YYYY'),
+            ],
         ]) ?>
     </div>
 
     <div class="form-group">
-        <?= $form->field($model, 'docsNumber')->textInput([
-            'value' => $model->docsNumber,
-            'placeholder' => Yii::t('custom', 'Enter number of documents'),
-            'class' => 'form-control input-3d'
+        <?= $form->field($model, 'docsNumber')->widget(MaskedInput::class, [
+            'mask' => '9{1,10}', // Маска для цілих позитивних чисел (до 10 цифр)
+            'clientOptions' => [
+                'digitsOptional' => false,
+                'rightAlign' => false,
+            ],
+            'options' => [
+                'class' => 'form-control input-3d',
+                'placeholder' => Yii::t('custom', 'Enter number of documents'),
+            ],
         ]) ?>
     </div>
 
@@ -62,6 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php ActiveForm::end(); ?>
 
 </div>
+
 <div id="ball">⚽</div>
 <div id="dog">🐕</div>
 <div id="basket">🧺</div>
