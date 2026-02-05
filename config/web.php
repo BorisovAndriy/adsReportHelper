@@ -65,6 +65,7 @@ $config = [
         'request' => [
             'class' => 'yii\web\Request',
             'cookieValidationKey' => 'MyVo5rrxdAj7R7KxLyxNSJcODhIGe-1m',
+            'baseUrl' => '/adsReportHelper', // ← ДОДАНО: Yii2 знає свій шлях у піддиректорії
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -101,7 +102,7 @@ if (YII_ENV_DEV) {
     ];
 
     $config['bootstrap'][] = 'gii';
-    $config['modules']['gii'] = [
+    $config['modules']['gii' ] = [
         'class' => 'yii\gii\Module',
     ];
 }

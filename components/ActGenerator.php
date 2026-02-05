@@ -28,6 +28,12 @@ class ActGenerator extends Component
      */
     public function generateAct(float $totalSumma, string $periodFrom, string $periodTo, int $docsNumber): string
     {
+
+        set_time_limit(0);        // безліміт
+        ini_set('max_execution_time', '0');
+
+
+
         // Конвертація числа у слова (сума прописом)
         $numberToWords = new NumberToWords();
         $totalSummaInWords = $numberToWords->convert($totalSumma);
@@ -42,7 +48,7 @@ class ActGenerator extends Component
 
         try {
             // Обробка Excel-шаблону
-            $inputFileName = 'source/act_template.xlsx';
+            $inputFileName = '/var/www/adsReportHelper/web/source/templates/act_template.xlsx';
             $spreadsheet = IOFactory::load($inputFileName);
             $sheet = $spreadsheet->getActiveSheet();
 

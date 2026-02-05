@@ -23,12 +23,13 @@ class ReportGenerator extends Component
      * @param string $periodFrom Дата початку періоду у форматі 'd.m.Y H:i:s'.
      * @param string $periodTo Дата закінчення періоду у форматі 'd.m.Y H:i:s'.
      * @param int $docsNumber Номер документа (звіту).
-     * @return void
+     * @param array $datas Масив даних для заповнення таблиці.
+     * @return string Шлях до згенерованого файлу.
      * @throws Exception Якщо виникають помилки під час обробки файлів.
      */
     public function generateReport(float $totalSum, string $periodFrom, string $periodTo, int $docsNumber, array $datas): string
     {
-        // Конвертація числа у слова (сума прописом)
+        // Конвертація числа у слова
         $numberToWords = new NumberToWords();
         $totalSumInWords = $numberToWords->convert($totalSum);
 
@@ -37,104 +38,88 @@ class ReportGenerator extends Component
         $dateFrom = $dateHandler->getDateFromDateTime($periodFrom);
         $dateTo = $dateHandler->getDateFromDateTime($periodTo);
 
-        // Формування даних для звіту
+        // Формування метаданих для звіту
         $reportData = $this->prepareReportData($docsNumber, $totalSum, $totalSumInWords, $dateFrom, $dateTo);
 
         try {
-            // Обробка Excel-шаблону
             $inputFileName = 'source/report_template.xlsx';
             $spreadsheet = IOFactory::load($inputFileName);
             $sheet = $spreadsheet->getActiveSheet();
 
+            // Очищення масиву від заголовків
+            unset($datas[0], $datas[1]);
 
-/*
-echo '<pre>';
-            var_dump($datas);;
-            die();
-*/
-            unset($datas[0]);
-            unset($datas[1]);
+            // Початковий рядок для вставки даних (зазвичай після заголовків таблиці)
+            $startRow = 3;
+            $currentRow = $startRow;
+
             if (!empty($datas)) {
-                foreach ($datas as $key => $data) {
-                    // Вставка нового рядка перед четвертим (старий 4-й рядок стає 5-м)
-                    $sheet->insertNewRowBefore($key + 1, 1); // Вставляємо один новий рядок на позиції $key+4
+                foreach ($datas as $data) {
+                    // Вставляємо новий рядок. Всі рядки шаблону, що нижче, автоматично зсуваються.
+                    $sheet->insertNewRowBefore($currentRow, 1);
 
+                    // Генерація випадкових дат для звіту
+                    $randomDateAction = $dateHandler->generateRandomDateTimeBetween($periodFrom, $periodTo);
+                    $randomDateProcessing = $dateHandler->generateRandomDateTimeFromPastThreeMonths($periodFrom);
 
-                    // Формування адрес клітинок для рядка $key+4
-                    $sheet->setCellValue('A' . ($key + 1), $data[0]);  // Значення для стовпця A
+                    // Заповнення комірок
+                    $sheet->setCellValue('A' . $currentRow, $data[0]);  // Admitad ID
+                    $sheet->setCellValue('B' . $currentRow, $randomDateProcessing); // Час обробки
+                    $sheet->setCellValue('C' . $currentRow, $randomDateAction);     // Час дії
+                    $sheet->setCellValue('D' . $currentRow, $data[5]);             // Сума винагороди
 
-                    $randomDate = $dateHandler->generateRandomDateTimeBetween($periodFrom, $periodTo);
-                    $randomDate2 = $dateHandler->generateRandomDateTimeFromPastThreeMonths($periodFrom);
-
-                    $sheet->setCellValue('B' . ($key + 1),  $randomDate2);  // Значення для стовпця B
-                    $sheet->setCellValue('C' . ($key + 1),  $randomDate);  // Значення для стовпця C
-                    $sheet->setCellValue('D' . ($key + 1), $data[5]);  // Значення для стовпця D
+                    $currentRow++;
                 }
             }
 
-            $sheet->setCellValue('D278', '=SUM(D3:D277)');  // Значення для стовпця D
-            //=SUM(D285:D287)
-// Вставляємо дані в новий рядок
+            // ПІДСУМКИ:
+            // Після циклу $currentRow вказує на рядок, де в шаблоні зазвичай "Сума без ПДВ"
+            $lastDataRow = $currentRow - 1;
+            $sumRange = "D{$startRow}:D{$lastDataRow}";
 
+            // Формула суми (тепер динамічна)
+            $sumFormula = "=SUM({$sumRange})";
 
-            // Заповнення звіту даними
+            // Записуємо суму в три стандартні рядки шаблону (Сума без ПДВ, ПДВ, Разом)
+            $sheet->setCellValue('D' . $currentRow, $sumFormula);       // Сума без ПДВ
+            $sheet->setCellValue('D' . ($currentRow + 1), 0);          // ПДВ (0 для ФОП не платника)
+            $sheet->setCellValue('D' . ($currentRow + 2), $sumFormula); // Разом з ПДВ
 
+            // Заповнення метаданих (Заголовок в A1 тощо)
             foreach ($reportData as $key => $value) {
                 $sheet->setCellValue($key, $value);
             }
 
-
-            // Збереження XLSX файлу
+            // Збереження результату
             $outputReportFileName = 'source/' . $docsNumber . '_report_andriy_borisov.xlsx';
             $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
             $writer->save($outputReportFileName);
 
         } catch (\PhpOffice\PhpSpreadsheet\Reader\Exception $e) {
-            throw new Exception('Помилка зчитування файлу: ' . $e->getMessage());
+            throw new Exception('Помилка зчитування шаблону: ' . $e->getMessage());
         } catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $e) {
-            throw new Exception('Помилка збереження файлу: ' . $e->getMessage());
+            throw new Exception('Помилка збереження звіту: ' . $e->getMessage());
         }
 
-        // Копіювання файлу з новим ім'ям
-        //$this->copyFile($inputFileName, $outputReportFileName);
         return $outputReportFileName;
     }
 
     /**
      * Підготовка даних для заповнення Excel шаблону.
-     *
-     * @param int $docsNumber Номер документа.
-     * @param float $totalSum Загальна сума по звіту.
-     * @param string $totalSumInWords Загальна сума прописом.
-     * @param string $dateFrom Дата початку періоду.
-     * @param string $dateTo Дата закінчення періоду.
-     * @return array Повертає масив із заповненими даними для звіту.
      */
     private function prepareReportData(int $docsNumber, float $totalSum, string $totalSumInWords, string $dateFrom, string $dateTo): array
     {
         return [
             'A1' => 'Admitad звіт ФОП Борисов Андрій до акту № ' . $docsNumber . ' від ' . $dateTo,
-            //'E27' => 'Послуги за період (' . $dateFrom . ' - ' . $dateTo . ')',
-            //'AE27' => $totalSum,
-            //'AI27' => $totalSum,
-            //'AI29' => $totalSum,
-            //'AJ31' => $totalSum,
-            //'C34' => $totalSumInWords . '. У т.ч. ПДВ: нуль гривень нуль копійок (не платник ПДВ)',
         ];
     }
 
     /**
      * Копіює файл з новим ім'ям.
-     *
-     * @param string $inputFileName Шлях до оригінального файлу.
-     * @param string $outputFileName Шлях до нового файлу.
-     * @return void
-     * @throws Exception У випадку помилки під час копіювання.
      */
     private function copyFile(string $inputFileName, string $outputFileName): void
     {
         $fileHandler = new FileHandler();
-
         try {
             $fileHandler->copyFileWithNewName($inputFileName, $outputFileName);
         } catch (\Exception $e) {
@@ -144,16 +129,10 @@ echo '<pre>';
 
     /**
      * Конвертує файл XLSX у PDF.
-     *
-     * @param string $xlsxFile Шлях до XLSX файлу.
-     * @param string $pdfFile Шлях до PDF файлу.
-     * @return void
-     * @throws Exception У випадку помилки конвертації.
      */
     private function convertToPdf(string $xlsxFile, string $pdfFile): void
     {
         $converter = new SpreadsheetToPdf();
-
         try {
             $converter->convertXlsxToPdf($xlsxFile, $pdfFile);
         } catch (\Exception $e) {
